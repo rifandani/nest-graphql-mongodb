@@ -1,0 +1,45 @@
+# if using docker run command
+# docker run -it --rm -d --name school-management -p 27017:27017 mongo:latest
+
+# docker-compose -f docker-compose.yml up -d
+# then, visit http://localhost:8080
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rizeki
+      MONGO_INITDB_ROOT_PASSWORD: rifandani
+      MONGO_INITDB_DATABASE: school-management
+    volumes:
+      - mongodb-data:/data/db
+      # The data will be stored on the host computer, delete it with => rm -rf ./my-folder/
+      # - ./my-data/:/data/db/
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - '8081:8081'
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+      ME_CONFIG_MONGODB_ADMINUSERNAME: rizeki
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rifandani
+      ME_CONFIG_OPTIONS_EDITORTHEME: dracula
+    depends_on:
+      - mongo
+
+# persist data even if container shuts down
+# destroy volume and its data => docker-compose down --volumes
+volumes:
+  mongodb-data:
+    driver: local
+networks:
+  default:
+    name: mongo-express-network
