@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 // files
 import { AppModule } from './app.module';
@@ -11,6 +11,7 @@ async function bootstrap() {
   // global config
   app.enableCors();
   app.setGlobalPrefix('api/v1');
+  app.useGlobalPipes(new ValidationPipe()); // class-validator
 
   // run server
   await app.listen(PORT);

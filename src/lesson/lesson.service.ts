@@ -1,30 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 // files
 import { LessonEntity } from './lesson.entity';
+import { LessonRepository } from './lesson.repository';
+import { CreateLessonInput } from './lesson.input';
 
 @Injectable()
 export class LessonService {
   constructor(
-    @InjectRepository(LessonEntity)
-    private lessonEntity: Repository<LessonEntity>,
+    @InjectRepository(LessonRepository)
+    private lessonRepository: LessonRepository,
   ) {}
 
-  async createLesson(
-    name: string,
-    startDate: string,
-    endDate: string,
-  ): Promise<LessonEntity> {
-    const lesson = this.lessonEntity.create({
-      id: uuid(),
-      name,
-      startDate,
-      endDate,
-    });
+  getLessons(): Promise<LessonEntity[]> {
+    return this.lessonRepository.getLessons();
+  }
 
-    return this.lessonEntity.save(lesson);
-    ;
+  getLessonById(id: string): Promise<LessonEntity> {
+    return this.lessonRepository.getLessonById(id);
+  }
+
+  createLesson(createLessonInput: CreateLessonInput): Promise<LessonEntity> {
+    return this.lessonRepository.createLesson(createLessonInput);
   }
 }
