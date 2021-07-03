@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 // files
-import { LessonEntity } from './lesson.entity';
 import { LessonRepository } from './lesson.repository';
-import { CreateLessonInput } from './lesson.input';
+import { LessonEntity } from './entities/lesson.entity';
+import { CreateLessonInput } from './dto/create-lesson.input';
 
 @Injectable()
 export class LessonService {

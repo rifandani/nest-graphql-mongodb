@@ -6,8 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 // files
-import { LessonEntity } from './lesson.entity';
-import { CreateLessonInput } from './lesson.input';
+import { LessonEntity } from './entities/lesson.entity';
+import { CreateLessonInput } from './dto/create-lesson.input';
 
 // typeorm mongodb can't use query & transaction methods
 @EntityRepository(LessonEntity)
