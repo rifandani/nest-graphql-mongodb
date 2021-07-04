@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 // files
-import { StudentType } from './student.type';
 import { StudentRepository } from './student.repository';
+import { StudentEntity } from './entities/student.entity';
 import { CreateStudentInput } from './dto/create-student.input';
 
 @Injectable()
@@ -12,15 +12,22 @@ export class StudentService {
     private studentRepository: StudentRepository,
   ) {}
 
-  getStudents(): Promise<StudentType[]> {
+  getStudents(): Promise<StudentEntity[]> {
     return this.studentRepository.getStudents();
   }
 
-  getStudentById(id: string): Promise<StudentType> {
+  getStudentById(id: string): Promise<StudentEntity> {
     return this.studentRepository.getStudentById(id);
   }
 
-  createStudent(createStudentInput: CreateStudentInput): Promise<StudentType> {
+  createStudent(
+    createStudentInput: CreateStudentInput,
+  ): Promise<StudentEntity> {
     return this.studentRepository.createStudent(createStudentInput);
+  }
+
+  // methods to populate lesson.students
+  getManyStudents(studentIds: string[]): Promise<StudentEntity[]> {
+    return this.studentRepository.getManyStudents(studentIds);
   }
 }

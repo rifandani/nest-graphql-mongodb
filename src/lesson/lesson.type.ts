@@ -1,4 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+// files
+import { StudentType } from 'src/student/student.type';
 
 @ObjectType('Lesson')
 export class LessonType {
@@ -13,6 +15,9 @@ export class LessonType {
 
   @Field()
   endDate: string; // as ISO string
+
+  @Field(() => [StudentType])
+  students: string[];
 }
 
 // typeorm entity and graphql type in the same file

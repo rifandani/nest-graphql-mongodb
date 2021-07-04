@@ -20,7 +20,7 @@ export class StudentRepository extends Repository<StudentEntity> {
       const students = await this.find();
       return students;
     } catch (err) {
-      this.logger.error(`Failed to get all students`, err.stack);
+      this.logger.error(`Failed to getStudents`, err.stack);
       throw new InternalServerErrorException(err.message);
     }
   }
@@ -38,7 +38,7 @@ export class StudentRepository extends Repository<StudentEntity> {
 
       return student;
     } catch (err) {
-      this.logger.error(`Failed to get student with id: ${id}`, err.stack);
+      this.logger.error(`Failed to getStudentById with id: ${id}`, err.stack);
       throw new InternalServerErrorException(err.message);
     }
   }
@@ -60,7 +60,26 @@ export class StudentRepository extends Repository<StudentEntity> {
       await this.save(student);
       return student;
     } catch (err) {
-      this.logger.error(`Failed to create student`, err.stack);
+      this.logger.error(`Failed to createStudent`, err.stack);
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  // methods to populate lesson.students
+  async getManyStudents(studentIds: string[]): Promise<StudentEntity[]> {
+    try {
+      // find all students based on id array, using mongodb specific FindOperator
+      const students = await this.find({
+        where: {
+          id: {
+            $in: studentIds,
+          },
+        },
+      });
+
+      return students;
+    } catch (err) {
+      this.logger.error(`Failed to getManyStudents`, err.stack);
       throw new InternalServerErrorException(err.message);
     }
   }
